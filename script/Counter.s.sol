@@ -8,7 +8,9 @@ contract CounterScript is Script {
     function setUp() public {}
 
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        //uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY"); Je veux utilisier cette clé sur Goréli
+        uint256 deployerPrivateKey = vm.envUint("LOCAL_PRIVATE_KEY"); //et celle ci en local
+
         vm.startBroadcast(deployerPrivateKey);
         new Counter();
         vm.stopBroadcast();
