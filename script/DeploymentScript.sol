@@ -21,23 +21,20 @@ contract DeploymentScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        IStudentToken studentToken = new StudentToken(evaluatorAddress);
-
-        studentToken.approve(evaluatorAddress,10000000);
-
         console.log("Script address: ", address(this));
 
-        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress,evaluatorAddress,studentToken);
-
+        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress);
         address solutionAddress = address(solution);
         console.log("Solution address: ", solutionAddress);
-        console.log("RewardToken Balance: ", solution.getRewardTokenBalance());
 
         solution.initializeRegistrations();
 
-        console.log("ok save token address",evaluator.studentToken(solutionAddress));
+        address studentTokenAddress = evaluator.studentToken(solutionAddress);
+        console.log("StudentToken address: ", studentTokenAddress);
 
         solution.executeExercise();
+
+        console.log("RewardToken Balance: ", solution.getRewardTokenBalance());
 
         vm.stopBroadcast();
     }

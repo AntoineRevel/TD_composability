@@ -14,23 +14,26 @@ contract LocalDeploymentScript is Script {
         address rewardTokenAddress = 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318;
         address evaluatorAddress = 0x610178dA211FEF7D417bC0e6FeD39F05609AD788;
 
+        IEvaluator evaluator = IEvaluator(evaluatorAddress);
+
         vm.startBroadcast(deployerPrivateKey);
         console.log("Script address: ", address(this));
 
-        IStudentToken studentToken = new StudentToken(evaluatorAddress);
-
-        console.log("StudentToken address: ", address(studentToken));
-
-        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress, studentToken);
+        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress);
         address solutionAddress = address(solution);
         console.log("Solution address: ", solutionAddress);
 
         solution.initializeRegistrations();
 
+        address studentTokenAddress = evaluator.studentToken(solutionAddress);
+        console.log("StudentToken address: ", studentTokenAddress);
+
         solution.executeExercise();
 
-        console.log("RewardToken Balance: ", solution.getRewardTokenBalance());
+        console.log("EvaluatorToken : ", evaluator.balanceOf(solutionAddress));
 
+
+        //console.log("RewardToken Balance: ", solution.getRewardTokenBalance());
         vm.stopBroadcast();
     }
 }

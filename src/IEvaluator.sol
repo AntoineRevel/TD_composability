@@ -2,6 +2,8 @@
 pragma solidity ^0.8.21;
 
 interface IEvaluator {
+    function balanceOf(address account) external view returns (uint256);
+
     function exerciceProgression(address, uint256) external view returns (bool);
     function studentToken(address) external view returns (address);
     function studentNft(address) external view returns (address);
