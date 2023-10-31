@@ -3,24 +3,19 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
 import "forge-std/console.sol";
-import "../src/RewardToken.sol";
-import "../src/IEvaluator.sol";
-import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 import "../src/ComposabilitySolutionAntoineR.sol";
 import "../src/StudentToken.sol";
 import "../src/Evaluator.sol";
 
-
-contract DeploymentScript is Script {
-    function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        address rewardTokenAddress = 0x56822085cf7C15219f6dC404Ba24749f08f34173;
-        address evaluatorAddress = 0x5cd93e3B0afBF71C9C84A7574a5023B4998B97BE;
-
+contract BaseDeploymentScript is Script {
+    function deploy(
+        uint256 deployerPrivateKey,
+        address rewardTokenAddress,
+        address evaluatorAddress
+    ) internal {
         IEvaluator evaluator = IEvaluator(evaluatorAddress);
 
         vm.startBroadcast(deployerPrivateKey);
-
         console.log("Script address: ", address(this));
 
         ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress);
@@ -34,8 +29,28 @@ contract DeploymentScript is Script {
 
         solution.executeExercise();
 
-        console.log("RewardToken Balance: ", solution.getRewardTokenBalance());
+        console.log("EvaluatorToken : ", evaluator.balanceOf(solutionAddress));
 
         vm.stopBroadcast();
+    }
+}
+
+contract LocalDeploymentScript is BaseDeploymentScript {
+    function run() external {
+        uint256 deployerPrivateKey = vm.envUint("LOCAL_PRIVATE_KEY");
+        address rewardTokenAddress = 0x8A791620dd6260079BF849Dc5567aDC3F2FdC318;
+        address evaluatorAddress = 0x610178dA211FEF7D417bC0e6FeD39F05609AD788;
+
+        deploy(deployerPrivateKey, rewardTokenAddress, evaluatorAddress);
+    }
+}
+
+contract DeploymentScript is BaseDeploymentScript {
+    function run() external {
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        address rewardTokenAddress = 0x56822085cf7C15219f6dC404Ba24749f08f34173;
+        address evaluatorAddress = 0x5cd93e3B0afBF71C9C84A7574a5023B4998B97BE;
+
+        deploy(deployerPrivateKey, rewardTokenAddress, evaluatorAddress);
     }
 }
