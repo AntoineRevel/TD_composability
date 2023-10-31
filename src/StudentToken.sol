@@ -13,7 +13,6 @@ contract StudentToken is IStudentToken, ERC20 {
         uint256 initialSupply = 3000000000 * 10 ** decimals();
         _mint(address(this), initialSupply);
         _approve(address(this),_evaluatorAddress,10000000);
-        console.log(allowance(address(this),_evaluatorAddress)); // pourquoi j'obient toujour 0 ici
     }
 
     function createLiquidityPool() external override {
