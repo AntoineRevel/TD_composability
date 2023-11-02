@@ -19,7 +19,7 @@ contract BaseDeploymentScript is Script {
         vm.startBroadcast(deployerPrivateKey);
         console.log("Script address: ", address(this));
 
-        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress, uniswapRouterAddress);
+        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR{value: 0.1 ether}(rewardTokenAddress, evaluatorAddress, uniswapRouterAddress);
         address solutionAddress = address(solution);
         console.log("Solution address: ", solutionAddress);
 
