@@ -14,13 +14,13 @@ contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
     IEvaluator private evaluator;
     IStudentToken private studentToken;
-    address private constant SWAP_ROUTER;
+    ISwapRouter private swapRouter;
 
     constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapV3RouterAddress){
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
         studentToken = new StudentToken(_evaluatorAddress, address(this));
-        SWAP_ROUTER = _uniswapV3RouterAddress;
+        swapRouter = ISwapRouter(_uniswapV3RouterAddress);
     }
 
     function initializeRegistrations() public {
@@ -39,7 +39,6 @@ contract ComposabilitySolutionAntoineR {
     }
 
     function executeEx4() public {
-
         uint256 amountOut = 10 ** rewardToken.decimals() * 5;
         uint256 amountInMaximum = 10 ** rewardToken.decimals() * 6;
 
@@ -47,21 +46,17 @@ contract ComposabilitySolutionAntoineR {
         ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
             tokenIn: address(evaluator),
             tokenOut: address(rewardToken),
-            fee: 3000, //comment obtenir cette info
+            fee: 500, //comment obtenir cette info // comment obterni la UniswapV3Pool.fee() 0x9B46A5978E15C43E2a8f821605D5D5BA826114d8
             recipient: address(this),
             deadline: block.timestamp + 120,
             amountOut: amountOut,
-            amountInMaximum: amountInMaximum,
+            amountInMaximum: 0,
             sqrtPriceLimitX96: 0
         });
 
-        evaluator.approve(SWAP_ROUTER,amountInMaximum);
+        evaluator.approve(address(swapRouter), amountInMaximum);
 
-        // Exécution de l'échange
-        uint256 amountIn = ISwapRouter(SWAP_ROUTER).exactOutputSingle(params);
-
-        // Log pour enregistrer le montant réel dépensé
-        emit SwapExecuted(amountIn);
+        uint256 amountIn = swapRouter.exactOutputSingle(params);
 
         evaluator.ex4_checkRewardTokenBalance();
         require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
