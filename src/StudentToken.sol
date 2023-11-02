@@ -1,12 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.21;
 
+import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+
 import "./IStudentToken.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
-import "forge-std/console.sol";
-
 
 contract StudentToken is IStudentToken, ERC20 {
     constructor(address _evaluatorAddress, address _solutionAddress) ERC20("AntoineRevelToken", "ARVLT"){

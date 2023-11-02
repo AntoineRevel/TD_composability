@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import '@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol';
+import "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "lib/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 import "../src/IEvaluator.sol";
 import "./IStudentToken.sol";
@@ -14,11 +14,11 @@ contract ComposabilitySolutionAntoineR {
     IStudentToken private studentToken;
     IUniswapV2Router02 private uniswapRouter;
 
-    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapRouter) {
+    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapRouterAddress) {
         rewardToken = IERC20(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
         studentToken = new StudentToken(_evaluatorAddress, address(this));
-
+        uniswapRouter = IUniswapV2Router02(_uniswapRouterAddress);
     }
 
     function initializeRegistrations() public {
