@@ -8,19 +8,19 @@ import "./StudentToken.sol";
 import "./RewardToken.sol";
 
 import "forge-std/console.sol";
-
+import "lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
     IEvaluator private evaluator;
     IStudentToken private studentToken;
-    IUniswapV2Router02 private uniswapRouter;
+    address private constant SWAP_ROUTER;
 
-    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapRouterAddress){
+    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapV3RouterAddress){
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
         studentToken = new StudentToken(_evaluatorAddress, address(this));
-        uniswapRouter = IUniswapV2Router02(_uniswapRouterAddress);
+        SWAP_ROUTER = _uniswapV3RouterAddress;
     }
 
     function initializeRegistrations() public {
@@ -39,17 +39,29 @@ contract ComposabilitySolutionAntoineR {
     }
 
     function executeEx4() public {
-        address[] memory path = new address[](2);
-        path[0] = uniswapRouter.WETH();
-        path[1] = address(0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984);
 
         uint256 amountOut = 10 ** rewardToken.decimals() * 5;
+        uint256 amountInMaximum = 10 ** rewardToken.decimals() * 6;
 
-        uint[] memory amountsIn = uniswapRouter.getAmountsIn(amountOut, path);
+        // Configurer les paramètres de l'échange
+        ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
+            tokenIn: address(evaluator),
+            tokenOut: address(rewardToken),
+            fee: 3000, //comment obtenir cette info
+            recipient: address(this),
+            deadline: block.timestamp + 120,
+            amountOut: amountOut,
+            amountInMaximum: amountInMaximum,
+            sqrtPriceLimitX96: 0
+        });
 
-        evaluator.approve(address(uniswapRouter), amountsIn[0]);
+        evaluator.approve(SWAP_ROUTER,amountInMaximum);
 
-        uniswapRouter.swapTokensForExactTokens(amountOut, amountsIn[0], path, address(this), block.timestamp + 15);
+        // Exécution de l'échange
+        uint256 amountIn = ISwapRouter(SWAP_ROUTER).exactOutputSingle(params);
+
+        // Log pour enregistrer le montant réel dépensé
+        emit SwapExecuted(amountIn);
 
         evaluator.ex4_checkRewardTokenBalance();
         require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
