@@ -13,7 +13,7 @@ contract BaseDeploymentScript is Script {
         address rewardTokenAddress,
         address evaluatorAddress
     ) internal {
-        address uniswapRouterAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
+        address uniswapV3RouterAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
         IEvaluator evaluator = IEvaluator(evaluatorAddress);
 
         vm.startBroadcast(deployerPrivateKey);
