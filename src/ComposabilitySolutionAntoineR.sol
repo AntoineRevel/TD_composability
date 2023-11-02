@@ -2,6 +2,8 @@
 pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import '@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol';
+
 import "../src/IEvaluator.sol";
 import "./IStudentToken.sol";
 import "./StudentToken.sol";
@@ -10,11 +12,13 @@ contract ComposabilitySolutionAntoineR {
     IERC20 private rewardToken;
     IEvaluator private evaluator;
     IStudentToken private studentToken;
+    IUniswapV2Router02 private uniswapRouter;
 
-    constructor(address _rewardTokenAddress, address _evaluatorAddress) {
+    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapRouter) {
         rewardToken = IERC20(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
         studentToken = new StudentToken(_evaluatorAddress, address(this));
+
     }
 
     function initializeRegistrations() public {
