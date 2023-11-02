@@ -27,7 +27,7 @@ contract BaseDeploymentScript is Script {
         address studentTokenAddress = evaluator.studentToken(solutionAddress);
         console.log("StudentToken address: ", studentTokenAddress);
 
-        solution.executeExercise();
+        solution.executeExercises();
 
         console.log("EvaluatorToken : ", evaluator.balanceOf(solutionAddress));
 
