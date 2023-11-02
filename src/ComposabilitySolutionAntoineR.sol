@@ -2,13 +2,13 @@
 pragma solidity ^0.8.13;
 
 import "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
-import 'lib/v2-core/contracts/interfaces/IUniswapV2Factory.sol';
 import "../src/IEvaluator.sol";
 import "./IStudentToken.sol";
 import "./StudentToken.sol";
 import "./RewardToken.sol";
 
 import "forge-std/console.sol";
+import {IUniswapV2Router02} from "lib/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
