@@ -41,6 +41,12 @@ contract ComposabilitySolutionAntoineR {
         evaluator.registerStudentToken(address(studentToken));
     }
 
+    function executeExercises() public {
+        executeEx2();
+        executeEx3();
+        executeEx4();
+    }
+
     function executeEx2() private {
         evaluator.ex2_mintStudentToken();
         require(evaluator.exerciceProgression(address(this), 0), "Exercise 2 failed");
@@ -52,11 +58,28 @@ contract ComposabilitySolutionAntoineR {
         require(evaluator.exerciceProgression(address(this), 1), "Exercise 3 failed");
     }
 
-    function executeEx4() public {
-        uint256 amountOut = 10 ** rewardToken.decimals() * 5;
+    function executeEx4() private {
+        uint256 amountIn = rewardTokenSwap(5);
 
+        emit AmountInLog(amountIn);
+
+        evaluator.ex4_checkRewardTokenBalance();
+        require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
+    }
+
+    function executeEx5() public {
+
+
+        evaluator.ex5_checkRewardTokenBalance();
+        require(evaluator.exerciceProgression(address(this), 3), "Exercise 4 failed");
+    }
+
+
+    function rewardTokenSwap(uint256 rewardAmount) public returns (uint256) {
         address tokenIn = address(evaluator);
         address tokenOut = address(rewardToken);
+
+        uint256 amountOut = 10 ** rewardToken.decimals() * rewardAmount;
 
         address poolAddress = uniswapFactory.getPool(tokenIn, tokenOut, 500);
         require(poolAddress != address(0), "Pool not found");
@@ -69,30 +92,21 @@ contract ComposabilitySolutionAntoineR {
         uint256 amountInMaximum = amountInEstimate * 110 / 100;
 
         ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
-            tokenIn: address(evaluator),
-            tokenOut: address(rewardToken),
+            tokenIn: tokenIn,
+            tokenOut: tokenOut,
             fee: fee,
             recipient: address(this),
             deadline: block.timestamp + 120,
             amountOut: amountOut,
             amountInMaximum: amountInMaximum,
-            sqrtPriceLimitX96: 0
+            sqrtPriceLimitX96: sqrtPriceLimitX96
         });
 
         evaluator.approve(address(swapRouter), amountInMaximum);
 
         uint256 amountIn = swapRouter.exactOutputSingle(params);
 
-        emit AmountInLog(amountIn);
-
-        evaluator.ex4_checkRewardTokenBalance();
-        require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
-    }
-
-    function executeExercises() public {
-        executeEx2();
-        executeEx3();
-        executeEx4();
+        return amountIn;
     }
 
     function getRewardTokenBalance() external view returns (uint256) {
