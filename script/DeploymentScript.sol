@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "forge-std/Script.sol";
-import "forge-std/console.sol";
+import "forge-std/src/Script.sol";
+import "forge-std/src/console.sol";
+
 import "../src/ComposabilitySolutionAntoineR.sol";
 import "../src/StudentToken.sol";
 import "../src/Evaluator.sol";

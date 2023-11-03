@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-import "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+
 import "../src/IEvaluator.sol";
 import "./IStudentToken.sol";
 import "./StudentToken.sol";
 import "./RewardToken.sol";
-
-import "forge-std/console.sol";
-import "lib/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
@@ -40,17 +40,21 @@ contract ComposabilitySolutionAntoineR {
 
     function executeEx4() public {
         uint256 amountOut = 10 ** rewardToken.decimals() * 5;
-        uint256 amountInMaximum = 10 ** rewardToken.decimals() * 6;
+        uint256 amountInMaximum = 10 ** rewardToken.decimals() * 10;
 
-        // Configurer les paramètres de l'échange
+        address poolAddress = 0x9B46A5978E15C43E2a8f821605D5D5BA826114d8;
+
+        IUniswapV3Pool pool = IUniswapV3Pool(poolAddress);
+        uint24 fee = pool.fee();
+
         ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
             tokenIn: address(evaluator),
             tokenOut: address(rewardToken),
-            fee: 500, //comment obtenir cette info // comment obterni la UniswapV3Pool.fee() 0x9B46A5978E15C43E2a8f821605D5D5BA826114d8
+            fee: fee,
             recipient: address(this),
             deadline: block.timestamp + 120,
             amountOut: amountOut,
-            amountInMaximum: 0,
+            amountInMaximum: amountInMaximum,
             sqrtPriceLimitX96: 0
         });
 
