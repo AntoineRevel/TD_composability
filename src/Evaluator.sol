@@ -2,9 +2,9 @@
 pragma solidity ^0.8.21;
 
 import {ERC20} from "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
-import {IStudentNft} from "./IStudentNft.sol";
+import {IStudentNft} from "./interfaces/IStudentNft.sol";
 import {RewardToken} from "./RewardToken.sol";
-import {IStudentToken} from "./IStudentToken.sol";
+import {IStudentToken} from "./interfaces/IStudentToken.sol";
 
 contract Evaluator is ERC20 {
     mapping(address => mapping(uint256 => bool)) public exerciceProgression;

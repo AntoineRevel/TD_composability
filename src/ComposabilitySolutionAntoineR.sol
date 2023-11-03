@@ -8,8 +8,8 @@ import "v3-periphery/contracts/interfaces/IQuoter.sol";
 import "v3-core/contracts/interfaces/IUniswapV3Pool.sol";
 import "v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 
-import "../src/IEvaluator.sol";
-import "./IStudentToken.sol";
+import "./interfaces/IEvaluator.sol";
+import "./interfaces/IStudentToken.sol";
 import "./StudentToken.sol";
 import "./RewardToken.sol";
 
