@@ -14,13 +14,17 @@ contract BaseDeploymentScript is Script {
         address rewardTokenAddress,
         address evaluatorAddress
     ) internal {
+        address uniswapV3FactoryAddress = 0x1F98431c8aD98523631AE4a59f267346ea31F984;
+        address uniswapV3QuoterAddress = 0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6;
         address uniswapV3RouterAddress = 0xE592427A0AEce92De3Edee1F18E0157C05861564;
+
         IEvaluator evaluator = IEvaluator(evaluatorAddress);
 
         vm.startBroadcast(deployerPrivateKey);
         console.log("Script address: ", address(this));
 
-        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(rewardTokenAddress, evaluatorAddress, uniswapV3RouterAddress);
+        ComposabilitySolutionAntoineR solution = new ComposabilitySolutionAntoineR(
+            rewardTokenAddress, evaluatorAddress, uniswapV3FactoryAddress, uniswapV3QuoterAddress, uniswapV3RouterAddress);
         address solutionAddress = address(solution);
         console.log("Solution address: ", solutionAddress);
 

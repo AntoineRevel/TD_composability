@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
+
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "v3-periphery/contracts/interfaces/IQuoter.sol";
 import "v3-core/contracts/interfaces/IUniswapV3Pool.sol";
+import "v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 
 import "../src/IEvaluator.sol";
 import "./IStudentToken.sol";
@@ -14,12 +17,23 @@ contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
     IEvaluator private evaluator;
     IStudentToken private studentToken;
+
+    IUniswapV3Factory public uniswapFactory;
+    IQuoter public uniswapQuoter;
     ISwapRouter private swapRouter;
 
-    constructor(address _rewardTokenAddress, address _evaluatorAddress, address _uniswapV3RouterAddress){
+    constructor(
+        address _rewardTokenAddress,
+        address _evaluatorAddress,
+        address _uniswapFactoryAddress,
+        address _uniswapQuoterAddress,
+        address _uniswapV3RouterAddress){
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
         studentToken = new StudentToken(_evaluatorAddress, address(this));
+
+        uniswapFactory = IUniswapV3Factory(_uniswapFactoryAddress);
+        uniswapQuoter = IQuoter(_uniswapQuoterAddress);
         swapRouter = ISwapRouter(_uniswapV3RouterAddress);
     }
 
@@ -40,12 +54,19 @@ contract ComposabilitySolutionAntoineR {
 
     function executeEx4() public {
         uint256 amountOut = 10 ** rewardToken.decimals() * 5;
-        uint256 amountInMaximum = 10 ** rewardToken.decimals() * 10;
 
-        address poolAddress = 0x9B46A5978E15C43E2a8f821605D5D5BA826114d8;
+        address tokenIn = address(evaluator);
+        address tokenOut = address(rewardToken);
+
+        address poolAddress = uniswapFactory.getPool(tokenIn, tokenOut, 500);
+        require(poolAddress != address(0), "Pool not found");
 
         IUniswapV3Pool pool = IUniswapV3Pool(poolAddress);
         uint24 fee = pool.fee();
+
+        uint160 sqrtPriceLimitX96 = 0;
+        uint256 amountInEstimate = uniswapQuoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, sqrtPriceLimitX96);
+        uint256 amountInMaximum = amountInEstimate * 110 / 100;
 
         ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
             tokenIn: address(evaluator),
@@ -62,6 +83,8 @@ contract ComposabilitySolutionAntoineR {
 
         uint256 amountIn = swapRouter.exactOutputSingle(params);
 
+        emit AmountInLog(amountIn);
+
         evaluator.ex4_checkRewardTokenBalance();
         require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
     }
@@ -75,6 +98,8 @@ contract ComposabilitySolutionAntoineR {
     function getRewardTokenBalance() external view returns (uint256) {
         return rewardToken.balanceOf(address(this));
     }
+
+    event AmountInLog(uint256 amountIn);
 
     receive() external payable {}
 }
