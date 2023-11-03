@@ -71,12 +71,11 @@ contract ComposabilitySolutionAntoineR {
 
     function executeEx5() public {
         uint256 amountIn = rewardTokenSwap(10);
-         rewardToken.approve(address(evaluator),amountIn);
+        rewardToken.approve(address(evaluator), amountIn);
 
         evaluator.ex5_checkRewardTokenBalance();
         require(evaluator.exerciceProgression(address(this), 3), "Exercise 5 failed");
     }
-
 
     function rewardTokenSwap(uint256 rewardAmount) public returns (uint256) {
         address tokenIn = address(evaluator);
@@ -107,9 +106,7 @@ contract ComposabilitySolutionAntoineR {
 
         evaluator.approve(address(swapRouter), amountInMaximum);
 
-        uint256 amountIn = swapRouter.exactOutputSingle(params);
-
-        return amountIn;
+        return swapRouter.exactOutputSingle(params);
     }
 
     function getRewardTokenBalance() external view returns (uint256) {
@@ -118,5 +115,5 @@ contract ComposabilitySolutionAntoineR {
 
     event AmountInLog(uint256 amountIn);
 
-    receive() external payable {}
+    //receive() external payable {}
 }
