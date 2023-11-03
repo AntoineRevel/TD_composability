@@ -45,22 +45,24 @@ contract ComposabilitySolutionAntoineR {
         executeEx2();
         executeEx3();
         executeEx4();
+        executeEx5();
     }
 
     function executeEx2() private {
+
         evaluator.ex2_mintStudentToken();
         require(evaluator.exerciceProgression(address(this), 0), "Exercise 2 failed");
     }
 
     function executeEx3() private {
         studentToken.transferFrom(address(studentToken), address(evaluator), studentToken.allowance(address(studentToken), address(this)));
+
         evaluator.ex3_mintEvaluatorToken();
         require(evaluator.exerciceProgression(address(this), 1), "Exercise 3 failed");
     }
 
     function executeEx4() private {
         uint256 amountIn = rewardTokenSwap(5);
-
         emit AmountInLog(amountIn);
 
         evaluator.ex4_checkRewardTokenBalance();
@@ -68,10 +70,11 @@ contract ComposabilitySolutionAntoineR {
     }
 
     function executeEx5() public {
-
+        uint256 amountIn = rewardTokenSwap(10);
+         rewardToken.approve(address(evaluator),amountIn);
 
         evaluator.ex5_checkRewardTokenBalance();
-        require(evaluator.exerciceProgression(address(this), 3), "Exercise 4 failed");
+        require(evaluator.exerciceProgression(address(this), 3), "Exercise 5 failed");
     }
 
 
