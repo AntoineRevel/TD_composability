@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.13;
 
-
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "v3-periphery/contracts/interfaces/IQuoter.sol";
@@ -14,7 +13,6 @@ import "./interfaces/IStudentNft.sol";
 import "./StudentToken.sol";
 import "./RewardToken.sol";
 import "./StudentNft.sol";
-
 
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
@@ -32,12 +30,13 @@ contract ComposabilitySolutionAntoineR {
         address _evaluatorAddress,
         address _uniswapFactoryAddress,
         address _uniswapQuoterAddress,
-        address _uniswapV3RouterAddress){
+        address _uniswapV3RouterAddress)
+    {
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
 
         studentToken = new StudentToken(_evaluatorAddress, address(this));
-        studentNft = new StudentNft();
+        studentNft = new StudentNft(_evaluatorAddress);
 
         uniswapFactory = IUniswapV3Factory(_uniswapFactoryAddress);
         uniswapQuoter = IQuoter(_uniswapQuoterAddress);
@@ -86,8 +85,7 @@ contract ComposabilitySolutionAntoineR {
         require(evaluator.exerciceProgression(address(this), 3), "Exercise 5 failed");
     }
 
-    function executeEx6() private{
-
+    function executeEx6() private {
         evaluator.ex8_mintNFT();
         require(evaluator.exerciceProgression(address(this), 4), "Exercise 6 failed");
     }
