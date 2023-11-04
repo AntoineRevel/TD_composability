@@ -54,6 +54,7 @@ contract ComposabilitySolutionAntoineR {
         executeEx4();
         executeEx5();
         executeEx6();
+        executeEx7();
     }
 
     function executeEx2() private {
@@ -87,7 +88,12 @@ contract ComposabilitySolutionAntoineR {
 
     function executeEx6() private {
         evaluator.ex8_mintNFT();
-        require(evaluator.exerciceProgression(address(this), 4), "Exercise 6 failed");
+        require(evaluator.exerciceProgression(address(this), 4), "Exercise mint NFT failed");
+    }
+
+    function executeEx7() private {
+        evaluator.ex9_burnNft();
+        require(evaluator.exerciceProgression(address(this), 5), "Exercise burn Nft failed");
     }
 
     function rewardTokenSwap(uint256 rewardAmount) private returns (uint256) {
@@ -128,5 +134,4 @@ contract ComposabilitySolutionAntoineR {
 
     event AmountInLog(uint256 amountIn);
 
-    //receive() external payable {}
 }

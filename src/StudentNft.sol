@@ -12,6 +12,7 @@ contract StudentNft is IStudentNft, ERC721 {
 
     constructor(address _evaluatorAddress) ERC721("AntoineRevelNFT", "ARNFT"){
         evaluator = IEvaluator(_evaluatorAddress);
+        _mint(address(this), 2);
     }
 
     function mint(uint256 tokenIdToMint) external {
@@ -24,7 +25,11 @@ contract StudentNft is IStudentNft, ERC721 {
         _mint(msg.sender, tokenIdToMint);
     }
 
-    function burn(uint256 tokenIdToBurn) external{
+    function burn(uint256 tokenIdToBurn) external {
+        _burn(tokenIdToBurn);
+    }
 
+    function ownerOf(uint256 tokenId) public view override(ERC721, IERC721) returns (address) {
+        return _ownerOf(tokenId);
     }
 }
