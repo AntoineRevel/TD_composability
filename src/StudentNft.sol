@@ -11,7 +11,7 @@ contract StudentNft is IStudentNft, ERC721 {
     }
 
     function mint(uint256 tokenIdToMint) external{
-        transferFrom(msg.sender,) //je veux récupérer le montantant maximum que le msg.sender a approve et ensuite lui mint le token d'id tokenIdToMint
+        //transferFrom(msg.sender,) //je veux récupérer le montantant maximum que le msg.sender a approve et ensuite lui mint le token d'id tokenIdToMint
 
     }
 
