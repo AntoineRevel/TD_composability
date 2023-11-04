@@ -89,7 +89,7 @@ contract ComposabilitySolutionAntoineR {
     function executeEx6() private{
 
         evaluator.ex8_mintNFT();
-        require(evaluator.exerciceProgression(address(this), 4), "Exercise 5 failed");
+        require(evaluator.exerciceProgression(address(this), 4), "Exercise 6 failed");
     }
 
     function rewardTokenSwap(uint256 rewardAmount) private returns (uint256) {
