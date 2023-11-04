@@ -60,3 +60,4 @@ contract DeploymentScript is BaseDeploymentScript {
         deploy(deployerPrivateKey, rewardTokenAddress, evaluatorAddress);
     }
 }
+//last Solution address:  0x7613F2c18Da470486Dee09160B221E11D506b9B2
