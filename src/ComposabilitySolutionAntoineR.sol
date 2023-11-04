@@ -10,13 +10,18 @@ import "v3-core/contracts/interfaces/IUniswapV3Factory.sol";
 
 import "./interfaces/IEvaluator.sol";
 import "./interfaces/IStudentToken.sol";
+import "./interfaces/IStudentNft.sol";
 import "./StudentToken.sol";
 import "./RewardToken.sol";
+import "./StudentNft.sol";
+
 
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
     IEvaluator private evaluator;
+
     IStudentToken private studentToken;
+    IStudentNft private studentNft;
 
     IUniswapV3Factory public uniswapFactory;
     IQuoter public uniswapQuoter;
@@ -30,7 +35,9 @@ contract ComposabilitySolutionAntoineR {
         address _uniswapV3RouterAddress){
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
+
         studentToken = new StudentToken(_evaluatorAddress, address(this));
+        studentNft = new StudentNft();
 
         uniswapFactory = IUniswapV3Factory(_uniswapFactoryAddress);
         uniswapQuoter = IQuoter(_uniswapQuoterAddress);
@@ -39,6 +46,7 @@ contract ComposabilitySolutionAntoineR {
 
     function initializeRegistrations() public {
         evaluator.registerStudentToken(address(studentToken));
+        evaluator.registerStudentNft(address(studentNft));
     }
 
     function executeExercises() public {
@@ -46,6 +54,7 @@ contract ComposabilitySolutionAntoineR {
         executeEx3();
         executeEx4();
         executeEx5();
+        executeEx6();
     }
 
     function executeEx2() private {
@@ -69,7 +78,7 @@ contract ComposabilitySolutionAntoineR {
         require(evaluator.exerciceProgression(address(this), 2), "Exercise 4 failed");
     }
 
-    function executeEx5() public {
+    function executeEx5() private {
         uint256 amountIn = rewardTokenSwap(10);
         rewardToken.approve(address(evaluator), amountIn);
 
@@ -77,7 +86,13 @@ contract ComposabilitySolutionAntoineR {
         require(evaluator.exerciceProgression(address(this), 3), "Exercise 5 failed");
     }
 
-    function rewardTokenSwap(uint256 rewardAmount) public returns (uint256) {
+    function executeEx6() private{
+
+        evaluator.ex8_mintNFT();
+        require(evaluator.exerciceProgression(address(this), 4), "Exercise 5 failed");
+    }
+
+    function rewardTokenSwap(uint256 rewardAmount) private returns (uint256) {
         address tokenIn = address(evaluator);
         address tokenOut = address(rewardToken);
 
