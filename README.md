@@ -1,66 +1,16 @@
-## Foundry
+# ESILV TD Composability Project
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+This repository hosts my implementation for the ESILV engineering school's TD Composability project. The work is based on the exercises outlined in [AymericNoel's TD_composability](https://github.com/AymericNoel/TD_composability).
 
-Foundry consists of:
+## Contents
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- Solidity contracts for ERC20 and ERC721 tokens.
+- Scripts for deployment and interaction with Ethereum contracts.
 
-## Documentation
+## Etherscan Verification
 
-https://book.getfoundry.sh/
+View my solution's verification on Etherscan [here](<https://goerli.etherscan.io/address/0x7613F2c18Da470486Dee09160B221E11D506b9B2?fbclid=IwAR0DH543JaV-80SX547tU_XAGem7o-xSggchsz6-jq-c3UwAr-QosM5A64A#code>).
 
 ## Usage
 
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Use `test_deploy.sh` and `deploy_and_verify.sh` for testing and verifying contracts.
