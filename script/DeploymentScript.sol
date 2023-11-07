@@ -53,7 +53,7 @@ contract LocalDeploymentScript is BaseDeploymentScript {
 
 contract DeploymentScript is BaseDeploymentScript {
     function run() external {
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        uint256 deployerPrivateKey = vm.envUint("GOERLI_PRIVATE_KEY");
         address rewardTokenAddress = 0x56822085cf7C15219f6dC404Ba24749f08f34173;
         address evaluatorAddress = 0x5cd93e3B0afBF71C9C84A7574a5023B4998B97BE;
 
