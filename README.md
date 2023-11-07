@@ -4,13 +4,18 @@ This repository hosts my implementation for the ESILV engineering school's TD Co
 
 ## Contents
 
-- Solidity contracts for ERC20 and ERC721 tokens.
-- Scripts for deployment and interaction with Ethereum contracts.
+- Deployed ERC20 and ERC721 contracts using Solidity.
+- Minted tokens and interacted with smart contract functions.
+- Implemented Uniswap V3 protocol operations for token swaps and liquidity management.
+- Automated contract deployment and testing with Foundry tools.
 
 ## Etherscan Verification
 
-View my solution's verification on Etherscan [here](<https://goerli.etherscan.io/address/0x7613F2c18Da470486Dee09160B221E11D506b9B2?fbclid=IwAR0DH543JaV-80SX547tU_XAGem7o-xSggchsz6-jq-c3UwAr-QosM5A64A#code>).
+View the verification of my most recent solution contract deployed on the Goerli test network on Etherscan [here](https://goerli.etherscan.io/address/0x7613F2c18Da470486Dee09160B221E11D506b9B2#code).
 
 ## Usage
 
-Use `test_deploy.sh` and `deploy_and_verify.sh` for testing and verifying contracts.
+Before using `test_deploy.sh` and `deploy_and_verify.sh` for testing and verifying contracts, define the following environment variables:
+- `GOERLI_RPC_URL`: Your Goerli testnet RPC URL.
+- `GOERLI_PRIVATE_KEY`: Your private key for the Goerli testnet.
+- `ETHERSCAN_API_KEY`: Your Etherscan API key for contract verification.
