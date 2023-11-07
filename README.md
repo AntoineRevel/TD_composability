@@ -1,4 +1,4 @@
-# ESILV TD Composability Project
+# ESILV TD Composability
 
 This repository hosts my implementation for the ESILV engineering school's TD Composability project. The work is based on the exercises outlined in [AymericNoel's TD_composability](https://github.com/AymericNoel/TD_composability).
 
