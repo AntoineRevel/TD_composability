@@ -28,8 +28,7 @@ contract Evaluator is ERC20 {
     // esilv-td only
     fallback() external payable {
         require(
-            keccak256(msg.data) ==
-            0x73955a2bc62a4e5da2c27e3b2b4d804c3c9bcd0e136855c46565022e5838224c, "wrong password"
+            keccak256(msg.data) == 0x73955a2bc62a4e5da2c27e3b2b4d804c3c9bcd0e136855c46565022e5838224c, "wrong password"
         );
         EtherBalance storage balance = studentEtherBalance[msg.sender];
         balance.amount += msg.value;
@@ -41,11 +40,7 @@ contract Evaluator is ERC20 {
     function ex2_mintStudentToken() public {
         require(studentToken[msg.sender].balanceOf(address(this)) == 0);
 
-        studentToken[msg.sender].transferFrom(
-            address(studentToken[msg.sender]),
-            address(this),
-            10000000
-        );
+        studentToken[msg.sender].transferFrom(address(studentToken[msg.sender]), address(this), 10000000);
 
         require(studentToken[msg.sender].balanceOf(address(this)) == 10000000);
         exerciceProgression[msg.sender][0] = true;
@@ -65,10 +60,10 @@ contract Evaluator is ERC20 {
     function ex4_checkRewardTokenBalance() public {
         require(exerciceProgression[msg.sender][1]);
 
-        uint amountToCheck = 5;
+        uint256 amountToCheck = 5;
         require(
-            rewardToken.balanceOf(msg.sender) ==
-            10 ** rewardToken.decimals() * amountToCheck, "balance insufficient in reward token"
+            rewardToken.balanceOf(msg.sender) == 10 ** rewardToken.decimals() * amountToCheck,
+            "balance insufficient in reward token"
         );
 
         if (!exerciceProgression[msg.sender][2]) {
@@ -79,18 +74,13 @@ contract Evaluator is ERC20 {
     function ex5_checkRewardTokenBalance() public {
         require(exerciceProgression[msg.sender][2]);
 
-        uint amountToCheck = 10;
+        uint256 amountToCheck = 10;
         uint256 previousBalance = rewardToken.balanceOf(address(this));
 
-        rewardToken.transferFrom(
-            msg.sender,
-            address(this),
-            10 ** rewardToken.decimals() * amountToCheck
-        );
+        rewardToken.transferFrom(msg.sender, address(this), 10 ** rewardToken.decimals() * amountToCheck);
 
         require(
-            rewardToken.balanceOf(address(this)) ==
-            previousBalance + (10 ** rewardToken.decimals() * amountToCheck)
+            rewardToken.balanceOf(address(this)) == previousBalance + (10 ** rewardToken.decimals() * amountToCheck)
         );
 
         if (!exerciceProgression[msg.sender][3]) {
@@ -105,23 +95,18 @@ contract Evaluator is ERC20 {
             return;
         } catch Error(string memory errorMessage) {
             require(
-                keccak256(abi.encodePacked(errorMessage)) ==
-                keccak256(
-                    abi.encodePacked("cannot mint nft without collateral")
-                ), "waiting for exception but did not get one"
+                keccak256(abi.encodePacked(errorMessage))
+                    == keccak256(abi.encodePacked("cannot mint nft without collateral")),
+                "waiting for exception but did not get one"
             );
             uint256 amountToMint = getFullAmount(10);
             distributeToken(address(this), amountToMint);
-            if (
-                allowance(address(this), address(studentNft[msg.sender])) == 0
-            ) {
+            if (allowance(address(this), address(studentNft[msg.sender])) == 0) {
                 _approve(address(this), address(studentNft[msg.sender]), amountToMint);
             }
             studentNft[msg.sender].mint(tokenIdToMint);
             require(studentNft[msg.sender].balanceOf(address(this)) == 1);
-            require(
-                studentNft[msg.sender].ownerOf(tokenIdToMint) == address(this)
-            );
+            require(studentNft[msg.sender].ownerOf(tokenIdToMint) == address(this));
             if (!exerciceProgression[msg.sender][4]) {
                 exerciceProgression[msg.sender][4] = true;
             }
@@ -143,10 +128,7 @@ contract Evaluator is ERC20 {
 
     function ex11_unlock_ethers() external {
         require(studentEtherBalance[msg.sender].amount > 0);
-        require(
-            studentEtherBalance[msg.sender].lastUpdate + 5 hours >
-            block.timestamp
-        );
+        require(studentEtherBalance[msg.sender].lastUpdate + 5 hours > block.timestamp);
 
         uint256 amountToSendBack = studentEtherBalance[msg.sender].amount;
         studentEtherBalance[msg.sender].amount = 0;
@@ -158,7 +140,7 @@ contract Evaluator is ERC20 {
     }
 
     function distributeToken(address tokenReceiver, uint256 amount) private {
-        uint amountToMint = getFullAmount(amount);
+        uint256 amountToMint = getFullAmount(amount);
         _mint(tokenReceiver, amountToMint);
     }
 

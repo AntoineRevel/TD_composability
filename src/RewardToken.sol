@@ -7,7 +7,7 @@ contract RewardToken is ERC20 {
     constructor() ERC20("RewardToken", "RTK") {
         uint256 decimals = decimals();
         uint256 multiplicator = 10 ** decimals;
-        uint valueToMint = 100000 * multiplicator;
+        uint256 valueToMint = 100000 * multiplicator;
         _mint(msg.sender, valueToMint);
     }
 }

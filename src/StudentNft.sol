@@ -7,10 +7,9 @@ import "./interfaces/IStudentNft.sol";
 import "./interfaces/IEvaluator.sol";
 
 contract StudentNft is IStudentNft, ERC721 {
-
     IEvaluator private evaluator;
 
-    constructor(address _evaluatorAddress) ERC721("AntoineRevelNFT", "ARNFT"){
+    constructor(address _evaluatorAddress) ERC721("AntoineRevelNFT", "ARNFT") {
         evaluator = IEvaluator(_evaluatorAddress);
         _mint(address(this), 2);
     }

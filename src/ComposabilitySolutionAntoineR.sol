@@ -30,8 +30,8 @@ contract ComposabilitySolutionAntoineR {
         address _evaluatorAddress,
         address _uniswapFactoryAddress,
         address _uniswapQuoterAddress,
-        address _uniswapV3RouterAddress)
-    {
+        address _uniswapV3RouterAddress
+    ) {
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
 
@@ -58,13 +58,14 @@ contract ComposabilitySolutionAntoineR {
     }
 
     function executeEx2() private {
-
         evaluator.ex2_mintStudentToken();
         require(evaluator.exerciceProgression(address(this), 0), "Exercise 2 failed");
     }
 
     function executeEx3() private {
-        studentToken.transferFrom(address(studentToken), address(evaluator), studentToken.allowance(address(studentToken), address(this)));
+        studentToken.transferFrom(
+            address(studentToken), address(evaluator), studentToken.allowance(address(studentToken), address(this))
+        );
 
         evaluator.ex3_mintEvaluatorToken();
         require(evaluator.exerciceProgression(address(this), 1), "Exercise 3 failed");
@@ -109,7 +110,8 @@ contract ComposabilitySolutionAntoineR {
         uint24 fee = pool.fee();
 
         uint160 sqrtPriceLimitX96 = 0;
-        uint256 amountInEstimate = uniswapQuoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, sqrtPriceLimitX96);
+        uint256 amountInEstimate =
+            uniswapQuoter.quoteExactOutputSingle(tokenIn, tokenOut, fee, amountOut, sqrtPriceLimitX96);
         uint256 amountInMaximum = amountInEstimate * 110 / 100;
 
         ISwapRouter.ExactOutputSingleParams memory params = ISwapRouter.ExactOutputSingleParams({
@@ -133,5 +135,4 @@ contract ComposabilitySolutionAntoineR {
     }
 
     event AmountInLog(uint256 amountIn);
-
 }
