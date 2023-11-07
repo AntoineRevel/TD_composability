@@ -21,8 +21,8 @@ contract ComposabilitySolutionAntoineR {
     IStudentToken private studentToken;
     IStudentNft private studentNft;
 
-    IUniswapV3Factory public uniswapFactory;
-    IQuoter public uniswapQuoter;
+    IUniswapV3Factory private uniswapFactory;
+    IQuoter private uniswapQuoter;
     ISwapRouter private swapRouter;
 
     constructor(
