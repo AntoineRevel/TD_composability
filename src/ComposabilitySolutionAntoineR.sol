@@ -14,6 +14,8 @@ import "./StudentToken.sol";
 import "./RewardToken.sol";
 import "./StudentNft.sol";
 
+import "forge-std/src/console.sol";
+
 contract ComposabilitySolutionAntoineR {
     RewardToken private rewardToken;
     IEvaluator private evaluator;
@@ -21,6 +23,7 @@ contract ComposabilitySolutionAntoineR {
     IStudentToken private studentToken;
     IStudentNft private studentNft;
 
+    IERC20 private WETH;
     IUniswapV3Factory private uniswapFactory;
     IQuoter private uniswapQuoter;
     ISwapRouter private swapRouter;
@@ -28,6 +31,7 @@ contract ComposabilitySolutionAntoineR {
     constructor(
         address _rewardTokenAddress,
         address _evaluatorAddress,
+        address _wethAddress,
         address _uniswapFactoryAddress,
         address _uniswapQuoterAddress,
         address _uniswapV3RouterAddress
@@ -35,9 +39,10 @@ contract ComposabilitySolutionAntoineR {
         rewardToken = RewardToken(_rewardTokenAddress);
         evaluator = IEvaluator(_evaluatorAddress);
 
-        studentToken = new StudentToken(_evaluatorAddress, address(this));
+        studentToken = new StudentToken(_evaluatorAddress, address(this),_wethAddress,_uniswapFactoryAddress);
         studentNft = new StudentNft(_evaluatorAddress);
 
+        WETH = IERC20(_wethAddress);
         uniswapFactory = IUniswapV3Factory(_uniswapFactoryAddress);
         uniswapQuoter = IQuoter(_uniswapQuoterAddress);
         swapRouter = ISwapRouter(_uniswapV3RouterAddress);
@@ -53,6 +58,7 @@ contract ComposabilitySolutionAntoineR {
         executeEx3();
         executeEx4();
         executeEx5();
+        executeEx6();
 
         executeEx8();
         executeEx9();
@@ -86,6 +92,11 @@ contract ComposabilitySolutionAntoineR {
 
         evaluator.ex5_checkRewardTokenBalance();
         require(evaluator.exerciceProgression(address(this), 3), "Exercise 5 failed");
+    }
+
+    function executeEx6() private {
+        studentToken.createLiquidityPool();
+        require(uniswapFactory.getPool(address(studentToken),address(WETH),3000) != address(0), "Exercise 6 failed");
     }
 
     function executeEx8() private {
