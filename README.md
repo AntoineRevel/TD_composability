@@ -11,7 +11,7 @@ This repository hosts implementation for the ESILV engineering school's TD Compo
 
 ## Etherscan Verification
 
-View the verification of the most recent solution contract deployed on the Goerli test network on Etherscan [here](https://goerli.etherscan.io/address/0x7613F2c18Da470486Dee09160B221E11D506b9B2#code).
+Verification of the most recent solution contract deployed on the Goerli test network on Etherscan [here](https://goerli.etherscan.io/address/0x7613F2c18Da470486Dee09160B221E11D506b9B2#code).
 
 ## Usage
 
